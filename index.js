@@ -1,4 +1,5 @@
 const Twit = require('twit')
+const fs = require('fs')
 require('dotenv').config()
 
 
@@ -11,8 +12,15 @@ const T = new Twit({
     strictSSL: false,
 })
 
-const stream = T.stream('statuses/filter', {track: '#JavaScript'});
+var stream = T.stream('statuses/filter', { track: '@vijaygenius123' });
+
 
 stream.on('tweet', tweet => {
-  console.log(tweet)
+    const json = JSON.stringify(tweet, null, 2);
+    fs.writeFile('tweet.json', json, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+    });
+
+    console.log(tweet)
 });
